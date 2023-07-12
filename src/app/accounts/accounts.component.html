@@ -1,2 +1,86 @@
-<p>accounts works!</p>
-
+<div class="container mt-2">
+    <div class="row">
+        <div class="col col-md-6">
+            <div class="card">
+                <div class="card-header">Accounts</div>
+                <div class="card-body">
+                    <form [formGroup]="accountFormGroup" (ngSubmit)="handleSearchAccount()">
+                        <div class="input-group">
+                            <label class="input-group-text">Account Id :</label>
+                            <input type="text" formControlName="accountId" class="form-control">
+                            <button class="btn btn-info"><i class="bi bi-search"></i> Search</button>
+                        </div>
+                    </form>
+                    <ng-container *ngIf="accountObservable | async as accountDetails">
+                        <div class="mb-2 mt-2">
+                            <label>Account ID : </label>
+                            <label><strong>{{accountDetails.accountId}}</strong></label>
+                        </div>
+                        <div class="mb-2">
+                            <label>Balance : </label>
+                            <label><strong>{{accountDetails.balance | number : '1.2-2'}}</strong></label>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <th>ID</th>
+                                <th>DATE</th>
+                                <th>TYPE</th>
+                                <th>AMOUNT</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let op of accountDetails.accountOperationDTOS">
+                                    <td>{{op.id}}</td>
+                                    <td>{{op.date | date : 'dd/MM/yyyy-HH:mm:ss'}}</td>
+                                    <td>{{op.type}}</td>
+                                    <td>{{op.amount  | number : '1.2-2'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul class="nav nav-pills">
+                            <li *ngFor="let item of [].constructor(accountDetails.totalPages);let page=index">
+                                <a [ngClass]="page==currentPage?'btn-info': 'btn-outline-info'" (click)="gotoPage(page)" class="btn ms-1 mt-1">{{page}}</a>
+                            </li>
+                        </ul>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-6">
+            <div class="card" *ngIf="accountObservable">
+                <div class="card-header">Operations</div>
+                <div class="card-body">
+                     <form [formGroup]="operationFormGroup" (ngSubmit)="handleAccountOperation()" method="post">
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" formControlName="operationType"  value="DEBIT">
+                            <label class="form-check-label" >DEBIT  </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" formControlName="operationType" class="form-check-input" value="CREDIT">
+                            <label class="form-check-label">CREDIT  </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" formControlName="operationType" class="form-check-input" value="TRANSFERT">
+                            <label class="form-check-label">TRANSFERT  </label>
+                        </div>
+                        <div class="mb-3" *ngIf="operationFormGroup.value.operationType == 'TRANSFERT'">
+                            <label class="form-label">Account Destination : </label>
+                            <input type="text" formControlName="accountDestination" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Amount : </label>
+                            <input type="number" formControlName="amount" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description : </label>
+                            <input type="text" formControlName="description" class="form-control">
+                        </div>
+                        <div class="d-grid mb-3">
+                            <button class="btn btn-success">Save Operation</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
