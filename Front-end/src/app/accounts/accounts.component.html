@@ -11,7 +11,17 @@
                             <button class="btn btn-info"><i class="bi bi-search"></i> Search</button>
                         </div>
                     </form>
-                    <ng-container *ngIf="accountObservable | async as accountDetails">
+                    <ng-template #errorTemplate>
+                        <ng-container *ngIf="errorMessage; else loading">
+                            <div class="text-danger">{{errorMessage}}</div>
+                        </ng-container>
+                    </ng-template>
+                    <ng-template #loading>
+                        <ng-container>
+                            Loading ....
+                        </ng-container>
+                    </ng-template>
+                    <ng-container *ngIf="accountObservable | async as accountDetails; ">
                         <div class="mb-2 mt-2">
                             <label>Account ID : </label>
                             <label><strong>{{accountDetails.accountId}}</strong></label>

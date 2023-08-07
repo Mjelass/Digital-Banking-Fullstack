@@ -14,3 +14,10 @@ export interface AccountOperation {
     type:        string;
     description: string;
 }
+
+export interface custAccounts {
+  type: string | null;
+  id: string;
+  balance: number;
+  createdAt: string;
+}

@@ -1,6 +1,7 @@
 package org.sid.ebankingbackend.web;
 
 import org.sid.ebankingbackend.dtos.*;
+import org.sid.ebankingbackend.entities.BankAccount;
 import org.sid.ebankingbackend.exceptions.BalanceNotSufficientException;
 import org.sid.ebankingbackend.exceptions.BankAccountNotFoundException;
 import org.sid.ebankingbackend.services.BankAccountService;
@@ -53,5 +54,10 @@ public class BankAccountRestAPI {
                 transferRequestDTO.getAccountSource(),
                 transferRequestDTO.getAccountDestination(),
                 transferRequestDTO.getAmount());
+    }
+
+    @GetMapping("customerAccount/{id}")
+    public List<BankAccountDTO> cusomerAccounts(@PathVariable Long id){
+        return bankAccountService.getCustomerAccounts(id);
     }
 }
